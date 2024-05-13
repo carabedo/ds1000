@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+</head>
+<body>
+    <h1>Data Display</h1>
+    <h2>Select a Tag</h2>
+    <select id="tagSelect">
+        <option value="pytorch">pytorch</option>
+        <option value="pandas">pandas</option>
+        <option value="numpy">numpy</option>
+        <option value="sklearn">sklearn</option>
+        <option value="scipy">scipy</option>
+        <option value="tensorflow">tensorflow</option>
+    </select>
+    <button onclick="getData()">Get Data</button>
+
+    <div id="firstData">
+
+        <pre><code id="firstDataContent">
+            {% for key, value in data.items() %}
+                {{ key }}: {{ value }}
+            {% endfor %}
+        </code></pre>
+    </div>
+
+
+    <script>
+        let respuesta 
+        function getData() {
+            var tag = document.getElementById("tagSelect").value;
+            fetch('/get_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tag: tag }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                respuesta = data
+
+                var firstDataDiv = document.getElementById("firstDataContent");
+                var newData = '';
+                for (const [key, value] of Object.entries(data)) {
+                    newData += `${key}: ${value}\n`;
+                }
+                firstDataDiv.textContent = newData;
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

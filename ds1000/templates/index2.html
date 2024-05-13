@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <style>
+        textarea {
+            width: 50%;
+            margin: 0 auto;
+            display: block;
+            resize: none; /* Disable resizing by the user */
+            overflow: hidden; /* Hide scrollbars */
+            pointer-events: none; /* Prevent user interaction */
+            border: none; /* Remove border */
+            background-color: transparent; /* Transparent background */
+        }
+        button {
+
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Display</h1>
+    <div id="firstData">
+        <h2>First Data</h2>
+        <div id="dataFields"></div>
+    </div>
+    <h2>Select a Tag</h2>
+    <select id="tagSelect">
+        <option value="torch">torch</option>
+        <option value="pandas">pandas</option>
+        <option value="numpy">numpy</option>
+        <option value="sklearn">sklearn</option>
+        <option value="scipy">scipy</option>
+        <option value="tensorflow">tensorflow</option>
+    </select>
+    <button onclick="getData()">Get Data</button>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log('Text copied to clipboard');
+            })
+            .catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        }
+
+        function getData() {
+            var tag = document.getElementById("tagSelect").value;
+            fetch('/get_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tag: tag }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var dataFieldsDiv = document.getElementById("dataFields");
+                dataFieldsDiv.innerHTML = ''; // Clear existing fields
+
+
+                    // Display each key in a separate text box with a copy button
+                    for (const key of Object.keys(data)) {
+                        var textBox = document.createElement("textarea");
+                        textBox.type = "text";
+                        textBox.value = data[key];
+                        textBox.readOnly = true;
+
+                        var copyButton = document.createElement("button");
+                        copyButton.textContent = "Copy";
+                        copyButton.onclick = function() {
+                            copyToClipboard(key);
+                        };
+
+                        dataFieldsDiv.appendChild(textBox);
+                        dataFieldsDiv.appendChild(copyButton);
+                        dataFieldsDiv.appendChild(document.createElement("br"));
+                    }
+       
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

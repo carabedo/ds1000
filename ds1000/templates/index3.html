@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <style>
+        textarea {
+            width: 50%;
+            margin: 0 auto;
+            display: block;
+            resize: none; /* Disable resizing by the user */
+            overflow: hidden; /* Hide scrollbars */
+            pointer-events: none; /* Prevent user interaction */
+            border: none; /* Remove border */
+            background-color: gainsboro; /* Transparent background */
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Display</h1>
+    <h2>Select a Tag</h2>
+    <select id="tagSelect">
+        <option value="torch">torch</option>
+        <option value="pandas">pandas</option>
+        <option value="numpy">numpy</option>
+        <option value="sklearn">sklearn</option>
+        <option value="scipy">scipy</option>
+        <option value="tensorflow">tensorflow</option>
+    </select>
+    <button onclick="getData()">Get Data</button>
+
+    <div id="firstData">
+        <h2>Prompt:</h2>
+        <div id="dataFields"></div>
+    </div>
+
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log('Text copied to clipboard');
+            })
+            .catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        }
+
+        function autoResizeTextArea(textarea) {
+            textarea.style.height = "auto"; // Reset height to auto to recalculate
+            textarea.style.height = (textarea.scrollHeight) + "px"; // Set height to fit content
+        }
+
+        function getData() {
+            var tag = document.getElementById("tagSelect").value;
+            fetch('/get_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tag: tag }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var dataFieldsDiv = document.getElementById("dataFields");
+                dataFieldsDiv.innerHTML = ''; // Clear existing fields
+
+                if (true) {
+                    // Display each value in a separate textarea with a copy button
+                    let orderedKeys = ['prompt','code_context','reference_code', 'metadata']
+                    for (const key of orderedKeys) {
+                        if (data.hasOwnProperty(key)) {
+                            var value = data[key];
+                            var textarea = document.createElement("textarea");
+
+                            textarea.value = value;
+                            textarea.readOnly = true;
+                            textarea.style.width = "50%";
+                            textarea.style.margin = "0 auto";
+                            textarea.style.display = "block";
+                            textarea.style.height = "auto"; // Start with auto height
+                            textarea.addEventListener('input', function() {
+                                autoResizeTextArea(this); // Automatically resize on input
+                            });
+
+                            var copyButton = document.createElement("button");
+                            copyButton.textContent = "Copy";
+                            copyButton.onclick = function() {
+                                copyToClipboard(value);
+                            };
+
+                            dataFieldsDiv.appendChild(textarea);
+                            dataFieldsDiv.appendChild(copyButton);
+                            dataFieldsDiv.appendChild(document.createElement("br"));
+                            autoResizeTextArea(textarea); // Initially resize textarea
+                        }
+                    }
+                } else {
+                    console.error('No data found.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
