@@ -5,24 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Display</title>
     <style>
-        textarea {
+        .data-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .data-container textarea {
+            width: 100%;
             margin: 0 auto;
             display: block;
             resize: none; /* Disable resizing by the user */
             overflow: hidden; /* Hide scrollbars */
             pointer-events: none; /* Prevent user interaction */
             border: none; /* Remove border */
-            background-color: gainsboro; /* Transparent background */
+            background-color: transparent; /* Transparent background */
         }
-        button {
-            margin: 0 auto;
-            display: block;
 
+        .data-container button {
+            margin-left: auto;
+            pointer-events: auto; /* Enable user interaction */
         }
     </style>
 </head>
 <body>
     <h1>Data Display</h1>
+    <div id="firstData">
+        <h2>First Data</h2>
+        <div id="dataFields" class="data-container"></div>
+    </div>
     <h2>Select a Tag</h2>
     <select id="tagSelect">
         <option value="torch">torch</option>
@@ -33,12 +44,6 @@
         <option value="tensorflow">tensorflow</option>
     </select>
     <button onclick="getData()">Get Data</button>
-
-    <div id="firstData">
-        <h2>Prompt:</h2>
-        <div id="dataFields"></div>
-    </div>
-
 
     <script>
         function copyToClipboard(text) {
@@ -72,19 +77,21 @@
                 dataFieldsDiv.innerHTML = ''; // Clear existing fields
 
                 if (true) {
-                    // Display each value in a separate textarea with a copy button
                     let orderedKeys = ['prompt','code_context','reference_code', 'metadata']
                     for (const key of orderedKeys) {
                         if (data.hasOwnProperty(key)) {
                             var value = data[key];
-                            var textarea = document.createElement("textarea");
+                            var containerDiv = document.createElement("div");
+                            containerDiv.className = "data-container";
 
-                            textarea.value = value;
+                            var textarea = document.createElement("textarea");
+                            if (key === 'prompt') {
+                                // If key is 'prompt', append it to the beginning of the textarea content
+                                textarea.value = value + '\n\n';
+                            } else {
+                                textarea.value = value;
+                            }
                             textarea.readOnly = true;
-                            textarea.style.width = "80%";
-                            textarea.style.margin = "0 auto";
-                            textarea.style.display = "block";
-                            textarea.style.height = "auto"; // Start with auto height
                             textarea.addEventListener('input', function() {
                                 autoResizeTextArea(this); // Automatically resize on input
                             });
@@ -95,8 +102,9 @@
                                 copyToClipboard(value);
                             };
 
-                            dataFieldsDiv.appendChild(textarea);
-                            dataFieldsDiv.appendChild(copyButton);
+                            containerDiv.appendChild(textarea);
+                            containerDiv.appendChild(copyButton);
+                            dataFieldsDiv.appendChild(containerDiv);
                             dataFieldsDiv.appendChild(document.createElement("br"));
                             autoResizeTextArea(textarea); // Initially resize textarea
                         }
