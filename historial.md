@@ -117,3 +117,61 @@ def calculateDistance(data,id1,id2):
     # return the solution in this function
     # result = calculateCorrelation(data)
 # BEGIN SOLUTION
+
+----
+
+Problem:
+I have a data set that contains medical information about patients. Each row represents a patient and contains relevant demographic information and health data.
+ [
+    {'Patient_ID': '001', 'Age': 34, 'Gender': 'Male', 'BMI': 22.4, 'Smoker': 'No', 'Cholesterol': 180, 'Systolic_BP': 120, 'Diastolic_BP': 80, 'Heart_Disease': 'No'},
+    {'Patient_ID': '002', 'Age': 58, 'Gender': 'Female', 'BMI': 27.6, 'Smoker': 'Yes', 'Cholesterol': 235, 'Systolic_BP': 130, 'Diastolic_BP': 85, 'Heart_Disease': 'Yes'},
+    {'Patient_ID': '003', 'Age': 50, 'Gender': 'Male', 'BMI': 24.5, 'Smoker': 'No', 'Cholesterol': 225, 'Systolic_BP': 135, 'Diastolic_BP': 88, 'Heart_Disease': 'No'},
+    {'Patient_ID': '004', 'Age': 29, 'Gender': 'Female', 'BMI': 20.1, 'Smoker': 'No', 'Cholesterol': 195, 'Systolic_BP': 125, 'Diastolic_BP': 82, 'Heart_Disease': 'No'},
+    {'Patient_ID': '005', 'Age': 65, 'Gender': 'Male', 'BMI': 28.4, 'Smoker': 'Yes', 'Cholesterol': 210, 'Systolic_BP': 140, 'Diastolic_BP': 90, 'Heart_Disease': 'Yes'}
+]
+I need to perform a multiple linear regression analysis using 'Cholesterol' as the dependent variable and 'BMI', 'Age', 'Gender' as independent variables. Considering the following data transformation 1 for Male and 0 for Female, is it possible to do this with scipy? As a result, I need the four coefficients of the regression.
+
+A:
+<code>
+import numpy as np
+from scipy.linalg import lstsq
+
+data = [
+    {'Patient_ID': '001', 'Age': 34, 'Gender': 'Male', 'BMI': 22.4, 'Smoker': 'No', 'Cholesterol': 180, 'Systolic_BP': 120, 'Diastolic_BP': 80, 'Heart_Disease': 'No'},
+    {'Patient_ID': '002', 'Age': 58, 'Gender': 'Female', 'BMI': 27.6, 'Smoker': 'Yes', 'Cholesterol': 235, 'Systolic_BP': 130, 'Diastolic_BP': 85, 'Heart_Disease': 'Yes'},
+    {'Patient_ID': '003', 'Age': 50, 'Gender': 'Male', 'BMI': 24.5, 'Smoker': 'No', 'Cholesterol': 225, 'Systolic_BP': 135, 'Diastolic_BP': 88, 'Heart_Disease': 'No'},
+    {'Patient_ID': '004', 'Age': 29, 'Gender': 'Female', 'BMI': 20.1, 'Smoker': 'No', 'Cholesterol': 195, 'Systolic_BP': 125, 'Diastolic_BP': 82, 'Heart_Disease': 'No'},
+    {'Patient_ID': '005', 'Age': 65, 'Gender': 'Male', 'BMI': 28.4, 'Smoker': 'Yes', 'Cholesterol': 210, 'Systolic_BP': 140, 'Diastolic_BP': 90, 'Heart_Disease': 'Yes'}
+]
+</code>
+result = ... # put solution in this variable
+BEGIN SOLUTION
+<code>
+
+
+-----
+
+Problem:
+I have the  the following data:
+
+[{'CustomerID': 1, 'Gender': 'Male', 'Age': 34, 'Tenure': 3, 'ServiceTier': 2, 'MonthlyCharges': 29.99, 'TotalCharges': 89.97, 'Churn': 'No'},
+  {'CustomerID': 2, 'Gender': 'Female', 'Age': 28, 'Tenure': 12, 'ServiceTier': 1, 'MonthlyCharges': 59.99, 'TotalCharges': 719.88, 'Churn': None},
+  {'CustomerID': 3, 'Gender': 'Female', 'Age': 23, 'Tenure': 1, 'ServiceTier': 3, 'MonthlyCharges': 18.99, 'TotalCharges': 18.99, 'Churn': None},
+  {'CustomerID': 4, 'Gender': 'Male', 'Age': 45, 'Tenure': 8, 'ServiceTier': 1, 'MonthlyCharges': 100.50, 'TotalCharges': 804.00, 'Churn': 'Yes'},
+  {'CustomerID': 5, 'Gender': 'Female', 'Age': 54, 'Tenure': 24, 'ServiceTier': 2, 'MonthlyCharges': 45.00, 'TotalCharges': 1080.00, 'Churn': 'No'}]
+
+I need to train a classifier with sklearn but my problem is the unlabeled data, I do not have too much data so I cannot afford to drop the missing data. How can I train a semisupervised model with this data? As a result, I need the prediction on customer 2. I will not use the gender information due to ethical implications, and legal requirements.
+
+A:
+<code>
+from sklearn.semi_supervised import LabelPropagation
+
+ data=[{'CustomerID': 1, 'Gender': 'Male', 'Age': 34, 'Tenure': 3, 'ServiceTier': 2, 'MonthlyCharges': 29.99, 'TotalCharges': 89.97, 'Churn': 'No'},
+  {'CustomerID': 2, 'Gender': 'Female', 'Age': 28, 'Tenure': 12, 'ServiceTier': 1, 'MonthlyCharges': 59.99, 'TotalCharges': 719.88, 'Churn': None},
+  {'CustomerID': 3, 'Gender': 'Female', 'Age': 23, 'Tenure': 1, 'ServiceTier': 3, 'MonthlyCharges': 18.99, 'TotalCharges': 18.99, 'Churn': None},
+  {'CustomerID': 4, 'Gender': 'Male', 'Age': 45, 'Tenure': 8, 'ServiceTier': 1, 'MonthlyCharges': 100.50, 'TotalCharges': 804.00, 'Churn': 'Yes'},
+  {'CustomerID': 5, 'Gender': 'Female', 'Age': 54, 'Tenure': 24, 'ServiceTier': 2, 'MonthlyCharges': 45.00, 'TotalCharges': 1080.00, 'Churn': 'No'}]
+</code>
+prediction = ... # put solution in this variable
+BEGIN SOLUTION
+<code>
