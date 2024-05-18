@@ -175,3 +175,26 @@ from sklearn.semi_supervised import LabelPropagation
 prediction = ... # put solution in this variable
 BEGIN SOLUTION
 <code>
+
+-----
+
+Problem:
+I need to choose between two strategies to reduce the dimensionality of a dataset. For this, please provide me with the code that does the following. First, take these two vectors representing two records belonging to the same class.
+
+a: [0, 1, 0, 1, 0]
+
+b: [1, 0, 1, 0, 1]
+
+Then, use ICA and PCA to reduce the dimensionality to 2 components of both vectors. And finally, compare in which representation these vectors are close. The result should be the transformer which represents better in a lower dimension the relationship of the vectors in the original space.
+
+
+A:
+<code>
+import numpy as np
+from sklearn.decomposition import PCA, FastICA
+a= [0, 1, 0, 1, 0]
+b = [1, 0, 1, 0, 1]
+</code>
+result = ... # put solution in this variable
+BEGIN SOLUTION
+<code>
