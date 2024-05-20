@@ -160,7 +160,7 @@ I have the  the following data:
   {'CustomerID': 4, 'Gender': 'Male', 'Age': 45, 'Tenure': 8, 'ServiceTier': 1, 'MonthlyCharges': 100.50, 'TotalCharges': 804.00, 'Churn': 'Yes'},
   {'CustomerID': 5, 'Gender': 'Female', 'Age': 54, 'Tenure': 24, 'ServiceTier': 2, 'MonthlyCharges': 45.00, 'TotalCharges': 1080.00, 'Churn': 'No'}]
 
-I need to train a classifier with sklearn but my problem is the unlabeled data, I do not have too much data so I cannot afford to drop the missing data. How can I train a semisupervised model with this data? As a result, I need the prediction on customer 2. I will not use the gender information due to ethical implications, and legal requirements.
+I need to train a classifier with sklearn but my problem is the unlabeled data, I do not have too much data so I cannot afford to drop the missing data. How can I train a semisupervised model from sci-kitlearn with this data? As a result, I need the prediction on customer 2. I will not use the gender information due to ethical implications, and legal requirements.
 
 A:
 <code>
@@ -176,6 +176,7 @@ prediction = ... # put solution in this variable
 BEGIN SOLUTION
 <code>
 
+<<<<<<< Updated upstream
 -----
 
 Problem:
@@ -187,10 +188,17 @@ b: [1, 0, 1, 0, 1]
 
 Then, use ICA and PCA to reduce the dimensionality to 2 components of both vectors. And finally, compare in which representation these vectors are close. The result should be the transformer which represents better in a lower dimension the relationship of the vectors in the original space.
 
+=======
+------
+
+Problem:
+I have an embedding model and 2 arrays of shape (18, 1), and if the similarity of the two embeddings is higher than 80% then the result variable should be true, else it should be false
+>>>>>>> Stashed changes
 
 A:
 <code>
 import numpy as np
+<<<<<<< Updated upstream
 from sklearn.decomposition import PCA, FastICA
 a= [0, 1, 0, 1, 0]
 b = [1, 0, 1, 0, 1]
@@ -300,3 +308,18 @@ patches = image.extract_patches_2d(img,
              (2,2), max_patches=0.5,
              random_state=random_seed)
 result = patches
+=======
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.ensemble import RandomTreesEmbedding
+np.random.seed(42)
+
+train_arr = np.random.rand(18, 1)
+model = RandomTreesEmbedding()
+model.fit(train_arr)
+
+arr1 = np.random.rand(18)
+arr2 = np.random.rand(18)
+</code>
+result = ... # Leave the results in this variable
+<code>
+>>>>>>> Stashed changes
