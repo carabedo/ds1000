@@ -198,3 +198,105 @@ b = [1, 0, 1, 0, 1]
 result = ... # put solution in this variable
 BEGIN SOLUTION
 <code>
+
+----
+
+
+Problem:
+I have the following data that represents user's metrics on a social network:
+
+[[1, 1], [2, 1], 
+[1, 0] , [4, 7], 
+[3, 5], [3, 6]]
+
+My goal is to segment users into two groups. How can I use sklearn to perform spectral clustering on the rows of this array? As a result, I need the labels. Beware that I tried, but I got an error due to the size of the dataset. 
+A:
+<code>
+from sklearn.cluster import SpectralClustering
+import numpy as np
+arr = np.array([[1, 1], [2, 1], [1, 0] , [4, 7], [3, 5], [3, 6]])
+</code>
+result = ... # Put the solution in this variable
+BEGIN SOLUTION
+<code>
+
+
+clustering = SpectralClustering(n_clusters=2,
+              assign_labels='discretize',
+              random_state=42).fit(arr)
+result = clustering.labels_
+
+
+-----
+
+
+
+Problem:
+I want to evaluate spectral clustering for outlier detection. The literature suggests that spectral clustering has an intrinsic property of an outlier cluster formation. This is my data
+ 
+[ {"Date": "2023-01-01", "Hour": 1, "Wind_Speed_m/s": 7.5, "Solar_Radiation_W/m2": 0.14, "Energy_Output_MWh": 1500},
+  {"Date": "2023-01-01", "Hour": 2, "Wind_Speed_m/s": 8.0, "Solar_Radiation_W/m2": 0.2, "Energy_Output_MWh": 1550},
+  {"Date": "2023-01-01", "Hour": 3, "Wind_Speed_m/s": 7.8, "Solar_Radiation_W/m2": 0.13, "Energy_Output_MWh": 1520},
+  {"Date": "2023-01-01", "Hour": 4, "Wind_Speed_m/s": 6.5, "Solar_Radiation_W/m2": 0.11, "Energy_Output_MWh": 1400},
+  {"Date": "2023-01-01", "Hour": 5, "Wind_Speed_m/s": 6.9, "Solar_Radiation_W/m2": 0.44, "Energy_Output_MWh": 1430} ]
+
+My goal is to segment records into two groups using wind speed, solar radiation and energy output. As a result, I need the labels. There is some problem in constructing the affinity matrix with my data, that I cannot resolve. How can I use sklearn to perform spectral clustering? 
+
+A:
+<code>
+from sklearn.cluster import SpectralClustering
+import pandas as pd 
+data = [ {"Date": "2023-01-01", "Hour": 1, "Wind_Speed_m/s": 7.5, "Solar_Radiation_W/m2": 0.14, "Energy_Output_MWh": 1500},
+  {"Date": "2023-01-01", "Hour": 2, "Wind_Speed_m/s": 8.0, "Solar_Radiation_W/m2": 0.2, "Energy_Output_MWh": 1550},
+  {"Date": "2023-01-01", "Hour": 3, "Wind_Speed_m/s": 7.8, "Solar_Radiation_W/m2": 0.13, "Energy_Output_MWh": 1520},
+  {"Date": "2023-01-01", "Hour": 4, "Wind_Speed_m/s": 6.5, "Solar_Radiation_W/m2": 0.11, "Energy_Output_MWh": 1400},
+  {"Date": "2023-01-01", "Hour": 5, "Wind_Speed_m/s": 6.9, "Solar_Radiation_W/m2": 0.44, "Energy_Output_MWh": 1430} ]
+</code>
+result = ... # put solution in this variable
+BEGIN SOLUTION
+<code>
+
+--------
+
+
+Problem:
+I'm a prompt engineer working with image segmentation, I need to analyze patches in large images. How can I do the following with scikit-learn, given this data:
+
+[ [1, 2, 3 ],
+    [6, 7, 8],
+    [11, 12, 13],
+    [16, 17, 18]]
+
+I need to extract random patches like this:
+
+[[[ 7  8]
+  [12 13]] 
+
+[[ 6  7]
+  [11 12]]
+
+ [[ 1  2]
+  [ 6  7]]]
+
+I need half of all possible combinations, I want to avoid using simple python for-loops as sklearn has an efficient implementation for patch extraction.
+
+A:
+<code>
+data= [ [1, 2, 3 ],
+    [6, 7, 8],
+    [11, 12, 13],
+    [16, 17, 18]]
+random_seed=65
+</code>
+result = ... # put solution in this variable
+BEGIN SOLUTION
+<code>
+
+from sklearn.feature_extraction import image
+import numpy as np
+
+img = np.array(data)
+patches = image.extract_patches_2d(img,
+             (2,2), max_patches=0.5,
+             random_state=random_seed)
+result = patches
