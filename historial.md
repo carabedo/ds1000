@@ -207,6 +207,7 @@ result = ... # put solution in this variable
 BEGIN SOLUTION
 <code>
 
+<<<<<<< Updated upstream
 ----
 
 
@@ -321,5 +322,68 @@ arr1 = np.random.rand(18)
 arr2 = np.random.rand(18)
 </code>
 result = ... # Leave the results in this variable
+<code>
+>>>>>>> Stashed changes
+=======
+-----
+
+Problem:
+I need to generate an array with a block checkerboard structure for biclustering. The data must have a 20 by 20 size. I want 6 clusters, but there must be a double amount of clusters in the rows axis. The values must be integers 0 to 5.
+
+A:
+<code>
+import numpy as np
+from sklearn.datasets import make_checkerboard
+random_state=42
+
+</code>
+result = ... # put the score in this variable
+BEGIN SOLUTION
+<code>
+import numpy as np
+from sklearn.datasets import make_checkerboard
+
+random_state = 42
+n_clusters = (4, 2)
+shape = (20, 20)
+data, rows, columns = make_checkerboard(shape, n_clusters, noise=0, random_state=random_state,minval =0,maxval=5)
+
+data = np.floor(data).astype(int)
+
+result = data
+
+print(result)
+
+----
+
+Problem:
+How can I perform a feature agglomeration using `sklearn` to join features `Gender` and `Smoker` to 1 cluster, and also join `Charges` and `Birth` into another cluster. This is my dataset:
+[
+    {'Age': 29, 'Birth': '1995-03-01', 'Gender': 'Male', 'Smoker': 'Yes', 'BMI': 27.5, 'Children': 2, 'Region': 'Southwest', 'Charges': 16884.92},
+    {'Age': 34, 'Birth': '1990-02-15', 'Gender': 'Female', 'Smoker': 'No', 'BMI': 28.9, 'Children': 1, 'Region': 'Southeast', 'Charges': 1725.55},
+    {'Age': 21, 'Birth': '2023-04-28', 'Gender': 'Male', 'Smoker': 'No', 'BMI': 31.1, 'Children': 0, 'Region': 'Northwest', 'Charges': 2198.19},
+    {'Age': 45, 'Birth': '1979-01-23', 'Gender': 'Female', 'Smoker': 'Yes', 'BMI': 29.6, 'Children': 3, 'Region': 'Northeast', 'Charges': 29016.18},
+    {'Age': 50, 'Birth': '1974-05-05', 'Gender': 'Male', 'Smoker': 'No', 'BMI': 30.3, 'Children': 4, 'Region': 'Southwest', 'Charges': 10214.64}]
+
+As a result, I need the newly created features.
+
+A:
+<code>
+from sklearn.cluster import FeatureAgglomeration
+from sklearn.preprocessing import LabelEncoder
+from datetime import datetime
+import pandas as pd
+dataset = [
+    {'Age': 29, 'Birth': '1995-03-01', 'Gender': 'Male', 'Smoker': 'Yes', 'BMI': 27.5, 'Children': 2, 'Region': 'Southwest', 'Charges': 16884.92},
+    {'Age': 34, 'Birth': '1990-02-15', 'Gender': 'Female', 'Smoker': 'No', 'BMI': 28.9, 'Children': 1, 'Region': 'Southeast', 'Charges': 1725.55},
+    {'Age': 21, 'Birth': '2023-04-28', 'Gender': 'Male', 'Smoker': 'No', 'BMI': 31.1, 'Children': 0, 'Region': 'Northwest', 'Charges': 2198.19},
+    {'Age': 45, 'Birth': '1979-01-23', 'Gender': 'Female', 'Smoker': 'Yes', 'BMI': 29.6, 'Children': 3, 'Region': 'Northeast', 'Charges': 29016.18},
+    {'Age': 50, 'Birth': '1974-05-05', 'Gender': 'Male', 'Smoker': 'No', 'BMI': 30.3, 'Children': 4, 'Region': 'Southwest', 'Charges': 10214.64}
+]
+df = pd.DataFrame(dataset)
+le = LabelEncoder()
+</code>
+result = ... # put solution in this variable
+BEGIN SOLUTION
 <code>
 >>>>>>> Stashed changes
